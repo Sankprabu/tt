@@ -235,7 +235,7 @@ def main(rand=random.SystemRandom()):
 	else:
 		user_agent = rand.choice(rand.sample(kontol["manual"], len(kontol["manual"])))
 	if len(kontol["password"]) < 6:
-		kontol["password"] = "dongolumonyet721"
+		kontol["password"] = "polo9090"
 	pp = kontol["pp"]
 	ps = kontol["ps"]
 	birthday = generate_birthday(rand)
@@ -268,8 +268,8 @@ def main(rand=random.SystemRandom()):
 	x.profile(pp)
 	x.sampul(ps)
 	x.bio(f".\nAkun Ini Dibuat Pada: {run.createat}\nBio Ini Dibuat Pada: {__import__('datetime').datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]}\n.")
-	x.current_city("Sukabumi")
-	x.hometown("Sukabumi")
+	x.current_city("Jakarta")
+	x.hometown("Jakarta")
 	x.relationship("Menjalin hubungan tanpa status")
 	x.nicknames("Gwejh Animeek")
 	x.about("Ewean")
@@ -284,14 +284,14 @@ def main(rand=random.SystemRandom()):
 	print("")
 	run.ses.close()
 
-print("\n    <[ https://github.com/mark-zugbreg ]>\n")
+print("\n    <[ https://github.com/Sankprabu ]>\n")
 
 try:
 	kontol = eval(open("kontol.json").read())
 except Exception as e:
-	print(f" {e}\n \x1b[1;37m, GITU AJA KAGAK BISA, KESEL BANGET GUE ANYIkijoNG\x1b[0m"); open("kontol.json", "w").write('{\n"manual": open("ua/ua.txt").read().strip().splitlines(),\n"password": "polo9090",\n"pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg",\n"ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"\n}'); kontol = {"manual": open("ua/ua.txt").read().strip().splitlines(), "password": "polo9090", "pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg", "ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"}
+	print(f" {e}\n \x1b[1;37m, GITU AJA KAGAK BISA, KESEL BANGET GUE kopet\x1b[0m"); open("kontol.json", "w").write('{\n"manual": open("ua/ua.txt").read().strip().splitlines(),\n"password": "polo9090",\n"pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg",\n"ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"\n}'); kontol = {"manual": open("ua/ua.txt").read().strip().splitlines(), "password": "polo9090", "pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg", "ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"}
 	
 while True:
 	main()
-	pause(60 * 3)
+	pause(60 * 2)
 	print("{} {}{}".format("\n", "+"*45, "\n"), end="\r")
