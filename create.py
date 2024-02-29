@@ -271,9 +271,9 @@ def main(rand=random.SystemRandom()):
 	x.current_city("Sukabumi")
 	x.hometown("Sukabumi")
 	x.relationship("Menjalin hubungan tanpa status")
-	x.nicknames("Gwejh Animek")
+	x.nicknames("Gwejh Animeek")
 	x.about("Ewean")
-	x.quote("tetap semangat menjalani hidup meskipun selalu ada keinginan untuk berkata \"hidup gini amat kontol\" di setiap harinya")
+	x.quote("tetap semangat menjalani hidup meskipun selalu ada keinginan untuk berkata \"hidup gini amat \" di setiap harinya")
 	for i in posts:
 		x.reaction(i)
 	for i in people:
@@ -289,7 +289,7 @@ print("\n    <[ https://github.com/mark-zugbreg ]>\n")
 try:
 	kontol = eval(open("kontol.json").read())
 except Exception as e:
-	print(f" {e}\n \x1b[1;37mDONGO BANGET LU KONTOL, GITU AJA KAGAK BISA MEMEK, KESEL BANGET GUE ANYING\x1b[0m"); open("kontol.json", "w").write('{\n"manual": open("ua/ua.txt").read().strip().splitlines(),\n"password": "megawatikontol230147",\n"pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg",\n"ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"\n}'); kontol = {"manual": open("ua/ua.txt").read().strip().splitlines(), "password": "megawatikontol230147", "pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg", "ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"}
+	print(f" {e}\n \x1b[1;37m, GITU AJA KAGAK BISA, KESEL BANGET GUE ANYIkijoNG\x1b[0m"); open("kontol.json", "w").write('{\n"manual": open("ua/ua.txt").read().strip().splitlines(),\n"password": "polo9090",\n"pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg",\n"ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"\n}'); kontol = {"manual": open("ua/ua.txt").read().strip().splitlines(), "password": "polo9090", "pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg", "ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"}
 	
 while True:
 	main()
