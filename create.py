@@ -13,7 +13,7 @@ import ua_generator
 name = open("lib/nama_indonesia").read().splitlines()
 
 # boleh ditambah asal jangan di apus id punya gue
-people, groups, posts = ["100049089360243"], ["3558968221050945", "992573388177226"], ["pfbid02RTGmywWG7YPFqjQgE2RNWSt7NyMrD6C3DFxhq5Y1HV3nU9e8uKZRYS2ZfRiKZACkl", "pfbid0mYDdGFoUJcvX1zV8L6fXasQxP7bGZQMMLefWUKY59PqiFQxjLVoVXAo8858k4xiZl", "798741978438774", "pfbid02QQYhMfqTi15NQsc5bvb2dYdocVXborquGHK1XBohwsmLGUZKLc3g3MW4om1ucnpPl", "pfbid026JPAJpJeW7wCzzrkDwiEV2zYBi3nMPK6UywqopqBcNdnyfF7zXqaQfgQwVXozcwtl", "pfbid0x5TmbmNrK5fJt7peUi9gcTp1T4kMENcGXNSu4p7vGRyQcu2BojByZKTsoAa9nyGJl"]
+#people, groups, posts = ["100049089360243"], ["3558968221050945", "992573388177226"], ["pfbid02RTGmywWG7YPFqjQgE2RNWSt7NyMrD6C3DFxhq5Y1HV3nU9e8uKZRYS2ZfRiKZACkl", "pfbid0mYDdGFoUJcvX1zV8L6fXasQxP7bGZQMMLefWUKY59PqiFQxjLVoVXAo8858k4xiZl", "798741978438774", "pfbid02QQYhMfqTi15NQsc5bvb2dYdocVXborquGHK1XBohwsmLGUZKLc3g3MW4om1ucnpPl", "pfbid026JPAJpJeW7wCzzrkDwiEV2zYBi3nMPK6UywqopqBcNdnyfF7zXqaQfgQwVXozcwtl", "pfbid0x5TmbmNrK5fJt7peUi9gcTp1T4kMENcGXNSu4p7vGRyQcu2BojByZKTsoAa9nyGJl"]
 
 def pause(second):
 	bar = [" [=     ] jeda {} detik", " [ =    ] jeda {} detik", " [  =   ] jeda {} detik", " [   =  ] jeda {} detik", " [    = ] jeda {} detik", " [     =] jeda {} detik", " [    = ] jeda {} detik", " [   =  ] jeda {} detik", " [  =   ] jeda {} detik", " [ =    ] jeda {} detik"]
@@ -71,7 +71,7 @@ class Create:
 			print(" [!] oops checkpoint")
 			print(f" [!] email: {self.mail['mail']}")
 			print(f" [!] useragent: {user_agent}")
-			return "CP-MANG"
+			return "GAGAL KAYA"
 		self.ses.headers.update({"referer": self.res.url})
 		self.par = BeautifulSoup(self.res.text, "html.parser")
 		self.form = self.par.find("form", action=re.compile("^/login/device-based/update-nonce/"))
@@ -202,7 +202,7 @@ class Bot:
 		self.res = self.ses.get(f"https://mbasic.facebook.com/{target}/?v=info&refid=17&paipv=0")
 		self.par = BeautifulSoup(self.res.text, "html.parser")
 		if (ikuyoo := self.par.find("a", href=lambda i: "/a/subscribe.php" in i)):
-			self.ses.get("https://mbasic.facebook.com" + ikuyoo["href"])
+			self.ses.get("https://mbasic.facebook.com" + ikuyooo["href"])
 			print(" [*] follow \x1b[1;37m" + self.par.find("title").text + "\x1b[0m")
 	
 	# tanggapi postingan
@@ -246,8 +246,8 @@ def main(rand=random.SystemRandom()):
 	time.sleep(3)
 	run = Create(names, mail, birthday)
 	res = run.register()
-	if res == "CP-MANG":
-		return "MEMEK"
+	if res == "GAGAL KAYA":
+		return "OKEGASS"
 	while True:
 		temporary = lib.Email(mail["session"]).inbox()
 		if temporary:
@@ -271,9 +271,9 @@ def main(rand=random.SystemRandom()):
 	x.current_city("Jakarta")
 	x.hometown("Jakarta")
 	x.relationship("Menjalin hubungan tanpa status")
-	x.nicknames("Gwejh Animeek")
-	x.about("Ewean")
-	x.quote("tetap semangat menjalani hidup meskipun selalu ada keinginan untuk berkata \"hidup gini amat \" di setiap harinya")
+	x.nicknames("pikeriko")
+	x.about("Suka berpetualang, mengeksplorasi tempat baru, dan menikmati indahnya alam. Selain itu, saya juga senang mendengarkan berbagai jenis musik untuk mengisi waktu luang")
+	x.quote("tetap semangat menjalani hidup okegas")
 	for i in posts:
 		x.reaction(i)
 	for i in people:
@@ -289,7 +289,7 @@ print("\n    <[ https://github.com/Sankprabu ]>\n")
 try:
 	kontol = eval(open("kontol.json").read())
 except Exception as e:
-	print(f" {e}\n \x1b[1;37m, GITU AJA KAGAK BISA, KESEL BANGET GUE kopet\x1b[0m"); open("kontol.json", "w").write('{\n"manual": open("ua/ua.txt").read().strip().splitlines(),\n"password": "polo9090",\n"pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg",\n"ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"\n}'); kontol = {"manual": open("ua/ua.txt").read().strip().splitlines(), "password": "polo9090", "pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg", "ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"}
+	print(f" {e}\n \x1b[1;37m, ssaalamm\x1b[0m"); open("kontol.json", "w").write('{\n"manual": open("ua/ua.txt").read().strip().splitlines(),\n"password": "polo9090",\n"pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg",\n"ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"\n}'); kontol = {"manual": open("ua/ua.txt").read().strip().splitlines(), "password": "polo9090", "pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg", "ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"}
 	
 while True:
 	main()
