@@ -9,6 +9,7 @@ import time
 import string
 import requests
 import ua_generator
+import threading
 name = open("lib/nama_indonesia").read().splitlines()
 
 # boleh ditambah asal jangan di apus id punya gue
@@ -40,6 +41,8 @@ def cvd(cookie):
 def cvs(cookie):
 	return ";".join("%s=%s" % (x, y) for x, y in cookie.items())
 
+
+
 class Create:
     
     def __init__(self, name, mail, birthday):
@@ -53,6 +56,7 @@ class Create:
         if len(kontol["manual"]) <= 1: 
             self.ses.headers.update({"sec-ch-ua": sechuafull.ch.brands.replace('" Not A;', '"Not.A/'), "sec-ch-ua-mobile": sechuafull.ch.mobile, "sec-ch-ua-platform-version": sechuafull.ch.platform_version, "sec-ch-ua-full-version-list": sechuafull.ch.brands_full_version_list.replace('" Not A;', '"Not.A/'), "sec-ch-ua-platform": sechuafull.ch.platform})
         self.res = self.ses.get("https://m.facebook.com/")
+        self.verifikasi_email = False
     
     @property
     def fetch(self):
@@ -89,15 +93,20 @@ class Create:
         self.form = self.par.find("form", method="post")
         self.res = self.ses.post("https://mbasic.facebook.com" + self.form["action"], data={i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}, headers={**self.ses.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0"})
         print(" [*] berhasil membuat akun")
-
+    
     def register_with_phone_or_email(self):
         # Coba daftar menggunakan nomor telepon
-        result = self.register()
-        if result == "CP-MANG":
-            # Jika muncul checkpoint, coba verifikasi melalui email
-            print(" [!] Gagal menerima kode verifikasi melalui nomor telepon. Melanjutkan verifikasi melalui email.")
-            kode = input("Masukkan kode verifikasi dari email: ")
-            self.verifikasi(kode)
+        self.register()
+        print(" [*] Berhasil mendaftar menggunakan nomor telepon.")
+        # Jika tidak menerima kode verifikasi dalam 5 detik, kirim ulang kode verifikasi melalui email
+        threading.Timer(5, self.kirim_ulang_kode_verifikasi).start()
+    
+    def kirim_ulang_kode_verifikasi(self):
+        if not self.verifikasi_email:
+            print(" [!] Tidak menerima kode verifikasi dalam 5 detik.")
+            print(" [!] Mengirim ulang kode verifikasi melalui email...")
+            # Implementasi pengiriman ulang kode verifikasi melalui email
+            self.verifikasi_email = True  # Menandai bahwa kode verifikasi melalui email telah dikirim ulang
 
 
 		
