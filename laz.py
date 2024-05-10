@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 # Path to your webdriver, e.g., chromedriver
-webdriver_path = '/path/to/your/webdriver'
+webdriver_path = '/storage/emulated/0/chromedriver'
 
 # Read email and password from a file
 with open('akun.txt', 'r') as file:
