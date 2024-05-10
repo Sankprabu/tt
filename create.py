@@ -55,7 +55,7 @@ class Create:
     def __init__(self, name, email, phone_number, birthday):
         self.ses = requests.Session()
         self.name = name
-        self.email = email
+        self.email = mail
         self.phone_number = phone_number
         self.birthday = birthday
         # Anda perlu menentukan bagaimana mendapatkan password atau mengganti 'kontol["password"]' dengan metode yang sesuai
@@ -144,7 +144,7 @@ class Create:
         self.res = self.ses.get(f"https://m.facebook.com/login/save-device/?login_source=account_creation&logger_id={self.data['logger_id']}&app_id=103", headers={**self.ses.headers, "sec-fetch-site": "same-origin"})
         if "checkpoint" in self.res.url:
             print(" [!] oops checkpoint")
-            print(f" [!] email: {self.email}")
+            print(f" [!] email: {self.mail}")
             print(f" [!] useragent: {user_agent}")
             return "CP-MANG"
         self.ses.headers.update({"referer": self.res.url})
