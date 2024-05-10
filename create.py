@@ -57,14 +57,10 @@ def cvs(cookie):
 
 
 
-
-
-
-
 import requests
-from bs4 import BeautifulSoup
-import re
 import random
+import re
+from bs4 import BeautifulSoup
 from datetime import datetime
 
 class Create:
@@ -75,9 +71,7 @@ class Create:
         self.email = email
         self.phone_number = phone_number
         self.birthday = birthday
-        # Anda perlu menentukan bagaimana mendapatkan password atau mengganti 'kontol["password"]' dengan metode yang sesuai
         self.password = kontol["password"]
-        # Update user_agent dengan nilai yang sesuai
         self.user_agent = user_agent
         self.ses.headers.update({
             "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
@@ -92,7 +86,6 @@ class Create:
             "viewport-width": "2756",
             "sec-ch-prefers-color-scheme": "light"
         })
-        # Jika menggunakan kontol manual, sesuaikan dengan kondisi yang sesuai
         if len(kontol["manual"]) <= 1: 
             self.ses.headers.update({
                 "sec-ch-ua": sechuafull.ch.brands.replace('" Not A;', '"Not.A/'),
@@ -105,7 +98,6 @@ class Create:
     
     @property
     def fetch(self):
-        # Mengambil URL pendaftaran melalui email
         self.res = self.ses.get("https://m.facebook.com" + BeautifulSoup(self.res.text, "html.parser").find("a", id="signup-button")["href"] + "&soft=hjk", headers={**self.ses.headers, "referer": self.res.url})
         self.par = BeautifulSoup(self.res.text, "html.parser")
         self.form = self.par.find("form", id="mobile-reg-form")
@@ -129,13 +121,14 @@ class Create:
             "age_step_input": "",
             "did_use_age": "false",
             "field_names[2]": "reg_email__",
-            # Menggunakan email sebagai alamat email
             "reg_email__": self.email,
-            "field_names[3]": "sex",
+            "field_names[3]": "reg_phone__",
+            "reg_phone__": self.phone_number,
+            "field_names[4]": "sex",
             "sex": random.SystemRandom().choice(["1", "2"]),
             "preferred_pronoun": "",
             "custom_gender": "",
-            "field_names[4]": "reg_passwd__",
+            "field_names[5]": "reg_passwd__",
             "reg_passwd__": self.password,
             "name_suggest_elig": "false",
             "was_shown_name_suggestions": "false",
@@ -179,19 +172,23 @@ class Create:
             "__user": self.ses.cookies["c_user"]
         }
     
-    def verifikasi(self, kode):
-        # Melakukan verifikasi melalui kode yang diterima melalui email
+    def verify_with_email(self, code):
         self.ses.headers.update({"referer": self.res.url})
-        self.res = self.ses.post(f"https://m.facebook.com/confirmation_cliff/?contact={self.email.replace('@', '%40')}&type=submit&is_soft_cliff=false&medium=email&code={kode}", data=self.data, headers={**self.ses.headers, "sec-fetch-dest": "empty", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "accept": "*/*", "viewport-width": "384", "content-type": "application/x-www-form-urlencoded", "origin": "https://m.facebook.com", "x-asbd-id": "129477", "x-fb-lsd": self.data["lsd"]})
+        self.res = self.ses.post(f"https://m.facebook.com/confirmation_cliff/?contact={self.email.replace('@', '%40')}&type=submit&is_soft_cliff=false&medium=email&code={code}", data=self.data, headers={**self.ses.headers, "sec-fetch-dest": "empty", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "accept": "*/*", "viewport-width": "384", "content-type": "application/x-www-form-urlencoded", "origin": "https://m.facebook.com", "x-asbd-id": "129477", "x-fb-lsd": self.data["lsd"]})
         if "home.php?confirmed_account" in self.res.text:
             self.ses.get("https://m.facebook.com/home.php?confirmed_account")
-        self.createat = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+        self.created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
         self.ses.headers.update({"host": "mbasic.facebook.com"})
         self.res = self.ses.get("https://mbasic.facebook.com/profile.php")
         self.par = BeautifulSoup(self.res.text, "html.parser")
         self.form = self.par.find("form", method="post")
         self.res = self.ses.post("https://mbasic.facebook.com" + self.form["action"], data={i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}, headers={**self.ses.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0"})
-        print(" [*] berhasil membuat akun")
+        print(" [*] Account creation successful")
+
+
+
+
+
 
 
 		
