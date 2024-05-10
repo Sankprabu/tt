@@ -56,6 +56,8 @@ def cvs(cookie):
 	return ";".join("%s=%s" % (x, y) for x, y in cookie.items())
 
 
+
+
 class Create:
     
     def __init__(self, name, email, phone_number, birthday):
@@ -64,8 +66,8 @@ class Create:
         self.email = email
         self.phone_number = phone_number
         self.birthday = birthday
-        self.password = kontol["password"]
-        self.user_agent = user_agent
+        self.password = generate_password(random)
+        self.user_agent = "Your User Agent"  # Ganti dengan user agent Anda
         self.ses.headers.update({
             "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
             "accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -79,14 +81,6 @@ class Create:
             "viewport-width": "2756",
             "sec-ch-prefers-color-scheme": "light"
         })
-        if len(kontol["manual"]) <= 1: 
-            self.ses.headers.update({
-                "sec-ch-ua": sechuafull.ch.brands.replace('" Not A;', '"Not.A/'),
-                "sec-ch-ua-mobile": sechuafull.ch.mobile,
-                "sec-ch-ua-platform-version": sechuafull.ch.platform_version,
-                "sec-ch-ua-full-version-list": sechuafull.ch.brands_full_version_list.replace('" Not A;', '"Not.A/'),
-                "sec-ch-ua-platform": sechuafull.ch.platform
-            })
         self.res = self.ses.get("https://m.facebook.com/")
     
     @property
@@ -115,8 +109,8 @@ class Create:
             "did_use_age": "false",
             "field_names[2]": "reg_email__",
             "reg_email__": self.email,
-            "field_names[3]": "reg_phone__",
-            "reg_phone__": self.phone_number,
+            "field_names[3]": "reg_email_confirmation__",
+            "reg_email_confirmation__": self.email,
             "field_names[4]": "sex",
             "sex": random.SystemRandom().choice(["1", "2"]),
             "preferred_pronoun": "",
@@ -130,7 +124,7 @@ class Create:
             "guid": "",
             "pre_form_step": "",
             "encpass": "",
-            "submit": "Daftar",
+            "submit": "Sign Up",
             "fb_dtsg": re.search('"dtsg":{"token":"(.*?)"', self.res.text).group(1),
             "jazoest": self.form.find("input", {"name": "jazoest"})["value"],
             "lsd": self.form.find("input", {"name": "lsd"})["value"],
@@ -146,26 +140,17 @@ class Create:
         self.ses.post("https://m.facebook.com" + self.action, data=self.data, headers={**self.ses.headers, "sec-fetch-dest": "empty", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "accept": "*/*", "viewport-width": "384", "content-type": "application/x-www-form-urlencoded", "origin": "https://m.facebook.com", "x-asbd-id": "129477", "x-fb-lsd": self.data["lsd"], "cache-control": "max-age=0"})
         self.res = self.ses.get(f"https://m.facebook.com/login/save-device/?login_source=account_creation&logger_id={self.data['logger_id']}&app_id=103", headers={**self.ses.headers, "sec-fetch-site": "same-origin"})
         if "checkpoint" in self.res.url:
-            print(" [!] oops checkpoint")
-            print(f" [!] email: {self.email}")
-            print(f" [!] useragent: {user_agent}")
+            print(" [!] Oops, checkpoint")
+            print(f" [!] Email: {self.email}")
+            print(f" [!] User Agent: {self.user_agent}")
             return "CP-MANG"
         self.ses.headers.update({"referer": self.res.url})
         self.par = BeautifulSoup(self.res.text, "html.parser")
         self.form = self.par.find("form", action=re.compile("^/login/device-based/update-nonce/"))
         self.res = self.ses.post("https://m.facebook.com" + self.form["action"], data={i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}, headers={**self.ses.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://m.facebook.com", "cache-control": "max-age=0"})
-        self.data = {
-            "fb_dtsg": re.search('"dtsg":{"token":"(.*?)"', self.res.text).group(1),
-            "jazoest": re.search('"jazoest", "(\d*)"', self.res.text).group(1),
-            "lsd": re.search('LSD",\[\],{"token":"(.*?)"', self.res.text).group(1),
-            "__dyn": "",
-            "__csr": "",
-            "__req": "4",
-            "__a": re.search('"encrypted":"(.*?)"', self.res.text).group(1),
-            "__user": self.ses.cookies["c_user"]
-        }
+        self.data = {"fb_dtsg": re.search('"dtsg":{"token":"(.*?)"', self.res.text).group(1), "jazoest": re.search('"jazoest", "(\d*)"', self.res.text).group(1), "lsd": re.search('LSD",\[\],{"token":"(.*?)"', self.res.text).group(1), "__dyn": "", "__csr": "", "__req": "4", "__a": re.search('"encrypted":"(.*?)"', self.res.text).group(1), "__user": self.ses.cookies["c_user"]}
     
-    def verify_with_email(self, code):
+    def verify(self, code):
         self.ses.headers.update({"referer": self.res.url})
         self.res = self.ses.post(f"https://m.facebook.com/confirmation_cliff/?contact={self.email.replace('@', '%40')}&type=submit&is_soft_cliff=false&medium=email&code={code}", data=self.data, headers={**self.ses.headers, "sec-fetch-dest": "empty", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "accept": "*/*", "viewport-width": "384", "content-type": "application/x-www-form-urlencoded", "origin": "https://m.facebook.com", "x-asbd-id": "129477", "x-fb-lsd": self.data["lsd"]})
         if "home.php?confirmed_account" in self.res.text:
@@ -176,7 +161,7 @@ class Create:
         self.par = BeautifulSoup(self.res.text, "html.parser")
         self.form = self.par.find("form", method="post")
         self.res = self.ses.post("https://mbasic.facebook.com" + self.form["action"], data={i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}, headers={**self.ses.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0"})
-        print(" [*] Account creation successful")
+        print(" [*] Akun berhasil dibuat")
 
 
 
