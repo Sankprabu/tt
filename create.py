@@ -56,13 +56,6 @@ def cvs(cookie):
 	return ";".join("%s=%s" % (x, y) for x, y in cookie.items())
 
 
-
-import requests
-import random
-import re
-from bs4 import BeautifulSoup
-from datetime import datetime
-
 class Create:
     
     def __init__(self, name, email, phone_number, birthday):
@@ -184,10 +177,6 @@ class Create:
         self.form = self.par.find("form", method="post")
         self.res = self.ses.post("https://mbasic.facebook.com" + self.form["action"], data={i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}, headers={**self.ses.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0"})
         print(" [*] Account creation successful")
-
-
-
-
 
 
 
