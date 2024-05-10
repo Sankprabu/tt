@@ -1,4 +1,3 @@
-exec(')"rotareneg-au llatsni pip"(metsys.so\t\n:tpecxe\nrotareneg_au tropmi\t\n:yrt\n)"stseuqer llatsni pip"(metsys.so\t\n:tpecxe\nstseuqer tropmi\t\n:yrt\n)"4sb llatsni pip"(metsys.so\t\n:tpecxe\n4sb tropmi\t\n:yrt\nso tropmi'[::-1])
 from bs4 import BeautifulSoup
 #import lxml
 import lib
