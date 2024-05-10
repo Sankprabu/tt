@@ -292,5 +292,5 @@ except Exception as e:
 	
 while True:
 	main()
-	pause(60 * 2)
+	pause(20 * 2)
 	print("{} {}{}".format("\n", "+"*45, "\n"), end="\r")
