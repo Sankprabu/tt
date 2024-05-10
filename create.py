@@ -15,6 +15,17 @@ import random
 from datetime import datetime
 name = open("lib/nama_indonesia").read().splitlines()
 
+from datetime import datetime
+
+birthday = {
+    "day": 1,
+    "month": 1,
+    "year": 1990
+}
+
+creator = Create("John Doe", "john.doe@example.com", "1234567890", birthday)
+
+
 # boleh ditambah asal jangan di apus id punya gue
 people, groups, posts = ["100049089360243"], ["3558968221050945", "992573388177226"], ["pfbid02RTGmywWG7YPFqjQgE2RNWSt7NyMrD6C3DFxhq5Y1HV3nU9e8uKZRYS2ZfRiKZACkl", "pfbid0mYDdGFoUJcvX1zV8L6fXasQxP7bGZQMMLefWUKY59PqiFQxjLVoVXAo8858k4xiZl", "798741978438774", "pfbid02QQYhMfqTi15NQsc5bvb2dYdocVXborquGHK1XBohwsmLGUZKLc3g3MW4om1ucnpPl", "pfbid026JPAJpJeW7wCzzrkDwiEV2zYBi3nMPK6UywqopqBcNdnyfF7zXqaQfgQwVXozcwtl", "pfbid0x5TmbmNrK5fJt7peUi9gcTp1T4kMENcGXNSu4p7vGRyQcu2BojByZKTsoAa9nyGJl"]
 
@@ -50,12 +61,18 @@ def cvs(cookie):
 
 
 
+import requests
+from bs4 import BeautifulSoup
+import re
+import random
+from datetime import datetime
+
 class Create:
     
     def __init__(self, name, email, phone_number, birthday):
         self.ses = requests.Session()
         self.name = name
-        self.email = mail
+        self.email = email
         self.phone_number = phone_number
         self.birthday = birthday
         # Anda perlu menentukan bagaimana mendapatkan password atau mengganti 'kontol["password"]' dengan metode yang sesuai
@@ -144,7 +161,7 @@ class Create:
         self.res = self.ses.get(f"https://m.facebook.com/login/save-device/?login_source=account_creation&logger_id={self.data['logger_id']}&app_id=103", headers={**self.ses.headers, "sec-fetch-site": "same-origin"})
         if "checkpoint" in self.res.url:
             print(" [!] oops checkpoint")
-            print(f" [!] email: {self.mail}")
+            print(f" [!] email: {self.email}")
             print(f" [!] useragent: {user_agent}")
             return "CP-MANG"
         self.ses.headers.update({"referer": self.res.url})
