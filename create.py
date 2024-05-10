@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-#import lxml
+import lxml
 import lib
 import re
 import glob
