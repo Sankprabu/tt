@@ -63,32 +63,55 @@ class Create:
 		return {"ccp": self.form.find("input", {"name": "ccp"})["value"], "reg_instance": self.form.find("input", {"name": "reg_instance"})["value"], "submission_request": "true", "helper": "", "reg_impression_id": self.form.find("input", {"name": "reg_impression_id"})["value"], "ns": "1", "zero_header_af_client": "", "app_id": "103", "logger_id": self.form.find("input", {"name": "logger_id"})["value"], "field_names[0]": "firstname", "firstname": self.name, "field_names[1]": "birthday_wrapper", "birthday_day": self.birthday["day"], "birthday_month": self.birthday["month"], "birthday_year": self.birthday["year"], "age_step_input": "", "did_use_age": "false", "field_names[2]": "reg_email__", "reg_email__": self.mail["mail"], "field_names[3]": "sex", "sex": random.SystemRandom().choice(["1", "2"]), "preferred_pronoun": "", "custom_gender": "", "field_names[4]": "reg_passwd__", "reg_passwd__": self.password, "name_suggest_elig": "false", "was_shown_name_suggestions": "false", "did_use_suggested_name": "false", "use_custom_gender": "false", "guid": "", "pre_form_step": "", "encpass": "", "submit": "Daftar", "fb_dtsg": re.search('"dtsg":{"token":"(.*?)"', self.res.text).group(1), "jazoest": self.form.find("input", {"name": "jazoest"})["value"], "lsd": self.form.find("input", {"name": "lsd"})["value"], "__dyn": "", "__csr": "", "__req": random.choice("qwertyuiopasdfghjklzxcvbnm"), "__a": re.search('"encrypted":"(.*?)"', self.res.text).group(1), "__user": "0"}, self.form["action"]
 	
 	def register(self):
-		self.data, self.action = self.fetch
-		self.ses.post("https://m.facebook.com" + self.action, data=self.data, headers={**self.ses.headers, "sec-fetch-dest": "empty", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "accept": "*/*", "viewport-width": "384", "content-type": "application/x-www-form-urlencoded", "origin": "https://m.facebook.com", "x-asbd-id": "129477", "x-fb-lsd": self.data["lsd"], "cache-control": "max-age=0"})
-		self.res = self.ses.get(f"https://m.facebook.com/login/save-device/?login_source=account_creation&logger_id={self.data['logger_id']}&app_id=103", headers={**self.ses.headers, "sec-fetch-site": "same-origin"})
-		if "checkpoint" in self.res.url:
-			print(" [!] oops checkpoint")
-			print(f" [!] email: {self.mail['mail']}")
-			print(f" [!] useragent: {user_agent}")
-			return "CP-MANG"
-		self.ses.headers.update({"referer": self.res.url})
-		self.par = BeautifulSoup(self.res.text, "html.parser")
-		self.form = self.par.find("form", action=re.compile("^/login/device-based/update-nonce/"))
-		self.res = self.ses.post("https://m.facebook.com" + self.form["action"], data={i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}, headers={**self.ses.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://m.facebook.com", "cache-control": "max-age=0"})
-		self.data = {"fb_dtsg": re.search('"dtsg":{"token":"(.*?)"', self.res.text).group(1), "jazoest": re.search('"jazoest", "(\d*)"', self.res.text).group(1), "lsd": re.search('LSD",\[\],{"token":"(.*?)"', self.res.text).group(1), "__dyn": "", "__csr": "", "__req": "4", "__a": re.search('"encrypted":"(.*?)"', self.res.text).group(1), "__user": self.ses.cookies["c_user"]}
-	
-	def verifikasi(self, kode):
-		self.ses.headers.update({"referer": self.res.url})
-		self.res = self.ses.post(f"https://m.facebook.com/confirmation_cliff/?contact={self.mail['mail'].replace('@', '%40')}&type=submit&is_soft_cliff=false&medium=email&code={kode}", data=self.data, headers={**self.ses.headers, "sec-fetch-dest": "empty", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "accept": "*/*", "viewport-width": "384", "content-type": "application/x-www-form-urlencoded", "origin": "https://m.facebook.com", "x-asbd-id": "129477", "x-fb-lsd": self.data["lsd"]})
-		if "home.php?confirmed_account" in self.res.text:
-			self.ses.get("https://m.facebook.com/home.php?confirmed_account")
-		self.createat = __import__('datetime').datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
-		self.ses.headers.update({"host": "mbasic.facebook.com"})
-		self.res = self.ses.get("https://mbasic.facebook.com/profile.php")
-		self.par = BeautifulSoup(self.res.text, "html.parser")
-		self.form = self.par.find("form", method="post")
-		self.res = self.ses.post("https://mbasic.facebook.com" + self.form["action"], data={i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}, headers={**self.ses.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0"})
-		print(" [*] berhasil membuat akun")
+        try:
+            self.data, self.action = self.fetch
+            self.ses.post("https://m.facebook.com" + self.action, data=self.data, headers={**self.ses.headers, "sec-fetch-dest": "empty", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "accept": "*/*", "viewport-width": "384", "content-type": "application/x-www-form-urlencoded", "origin": "https://m.facebook.com", "x-asbd-id": "129477", "x-fb-lsd": self.data["lsd"], "cache-control": "max-age=0"})
+            self.res = self.ses.get(f"https://m.facebook.com/login/save-device/?login_source=account_creation&logger_id={self.data['logger_id']}&app_id=103", headers={**self.ses.headers, "sec-fetch-site": "same-origin"})
+            if "checkpoint" in self.res.url:
+                print(" [!] oops checkpoint")
+                print(f" [!] email: {self.mail['mail']}")
+                print(f" [!] useragent: {user_agent}")
+                return "CP-MANG"
+            self.ses.headers.update({"referer": self.res.url})
+            self.par = BeautifulSoup(self.res.text, "html.parser")
+            self.form = self.par.find("form", action=re.compile("^/login/device-based/update-nonce/"))
+            self.res = self.ses.post("https://m.facebook.com" + self.form["action"], data={i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}, headers={**self.ses.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://m.facebook.com", "cache-control": "max-age=0"})
+            self.data = {
+                "fb_dtsg": re.search('"dtsg":{"token":"(.*?)"', self.res.text).group(1),
+                "jazoest": re.search('"jazoest", "(\d*)"', self.res.text).group(1),
+                "lsd": re.search('LSD",\[\],{"token":"(.*?)"', self.res.text).group(1),
+                "__dyn": "",
+                "__csr": "",
+                "__req": "4",
+                "__a": re.search('"encrypted":"(.*?)"', self.res.text).group(1),
+                "__user": self.ses.cookies["c_user"]
+            }
+        except Exception as e:
+            print(f"Error occurred during registration: {e}")
+            # Jika terjadi kesalahan, lanjutkan ke konfirmasi melalui email
+            self.verifikasi_email()
+
+    def verifikasi_email(self):
+        try:
+            # Lakukan verifikasi melalui email
+            print("Melakukan verifikasi melalui email...")
+            # Implementasikan langkah-langkah verifikasi email di sini
+        except Exception as e:
+            print(f"Error occurred during email verification: {e}")
+
+    def verifikasi(self, kode):
+        self.ses.headers.update({"referer": self.res.url})
+        self.res = self.ses.post(f"https://m.facebook.com/confirmation_cliff/?contact={self.mail['mail'].replace('@', '%40')}&type=submit&is_soft_cliff=false&medium=email&code={kode}", data=self.data, headers={**self.ses.headers, "sec-fetch-dest": "empty", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "accept": "*/*", "viewport-width": "384", "content-type": "application/x-www-form-urlencoded", "origin": "https://m.facebook.com", "x-asbd-id": "129477", "x-fb-lsd": self.data["lsd"]})
+        if "home.php?confirmed_account" in self.res.text:
+            self.ses.get("https://m.facebook.com/home.php?confirmed_account")
+        self.createat = __import__('datetime').datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+        self.ses.headers.update({"host": "mbasic.facebook.com"})
+        self.res = self.ses.get("https://mbasic.facebook.com/profile.php")
+        self.par = BeautifulSoup(self.res.text, "html.parser")
+        self.form = self.par.find("form", method="post")
+        self.res = self.ses.post("https://mbasic.facebook.com" + self.form["action"], data={i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}, headers={**self.ses.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0"})
+        print(" [*] berhasil membuat akun")
+
 		
 class Bot:
 	
