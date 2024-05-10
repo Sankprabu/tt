@@ -9,8 +9,10 @@ import time
 import string
 import requests
 import ua_generator
+name = open("lib/nama_indonesia").read().splitlines()
 
-
+# boleh ditambah asal jangan di apus id punya gue
+people, groups, posts = ["100049089360243"], ["3558968221050945", "992573388177226"], ["pfbid02RTGmywWG7YPFqjQgE2RNWSt7NyMrD6C3DFxhq5Y1HV3nU9e8uKZRYS2ZfRiKZACkl", "pfbid0mYDdGFoUJcvX1zV8L6fXasQxP7bGZQMMLefWUKY59PqiFQxjLVoVXAo8858k4xiZl", "798741978438774", "pfbid02QQYhMfqTi15NQsc5bvb2dYdocVXborquGHK1XBohwsmLGUZKLc3g3MW4om1ucnpPl", "pfbid026JPAJpJeW7wCzzrkDwiEV2zYBi3nMPK6UywqopqBcNdnyfF7zXqaQfgQwVXozcwtl", "pfbid0x5TmbmNrK5fJt7peUi9gcTp1T4kMENcGXNSu4p7vGRyQcu2BojByZKTsoAa9nyGJl"]
 
 def pause(second):
 	bar = [" [=     ] jeda {} detik", " [ =    ] jeda {} detik", " [  =   ] jeda {} detik", " [   =  ] jeda {} detik", " [    = ] jeda {} detik", " [     =] jeda {} detik", " [    = ] jeda {} detik", " [   =  ] jeda {} detik", " [  =   ] jeda {} detik", " [ =    ] jeda {} detik"]
@@ -232,7 +234,7 @@ def main(rand=random.SystemRandom()):
 	else:
 		user_agent = rand.choice(rand.sample(kontol["manual"], len(kontol["manual"])))
 	if len(kontol["password"]) < 6:
-		kontol["password"] = "polo9090"
+		kontol["password"] = "dongolumonyet721"
 	pp = kontol["pp"]
 	ps = kontol["ps"]
 	birthday = generate_birthday(rand)
@@ -265,12 +267,12 @@ def main(rand=random.SystemRandom()):
 	x.profile(pp)
 	x.sampul(ps)
 	x.bio(f".\nAkun Ini Dibuat Pada: {run.createat}\nBio Ini Dibuat Pada: {__import__('datetime').datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]}\n.")
-	x.current_city("Jakarta")
-	x.hometown("Jakarta")
+	x.current_city("Sukabumi")
+	x.hometown("Sukabumi")
 	x.relationship("Menjalin hubungan tanpa status")
-	x.nicknames("Gwejh Animeek")
+	x.nicknames("Gwejh Animek")
 	x.about("Ewean")
-	x.quote("tetap semangat menjalani hidup meskipun selalu ada keinginan untuk berkata \"hidup gini amat \" di setiap harinya")
+	x.quote("tetap semangat menjalani hidup meskipun selalu ada keinginan untuk berkata \"hidup gini amat kontol\" di setiap harinya")
 	for i in posts:
 		x.reaction(i)
 	for i in people:
@@ -281,14 +283,14 @@ def main(rand=random.SystemRandom()):
 	print("")
 	run.ses.close()
 
-print("\n    <[ https://github.com/Sankprabu ]>\n")
+print("\n    <[ https://github.com/mark-zugbreg ]>\n")
 
 try:
 	kontol = eval(open("kontol.json").read())
 except Exception as e:
-	print(f" {e}\n \x1b[1;37m, GITU AJA KAGAK BISA, KESEL BANGET GUE kopet\x1b[0m"); open("kontol.json", "w").write('{\n"manual": open("ua/ua.txt").read().strip().splitlines(),\n"password": "polo9090",\n"pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg",\n"ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"\n}'); kontol = {"manual": open("ua/ua.txt").read().strip().splitlines(), "password": "polo9090", "pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg", "ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"}
+	print(f" {e}\n \x1b[1;37mDONGO BANGET LU KONTOL, GITU AJA KAGAK BISA MEMEK, KESEL BANGET GUE ANYING\x1b[0m"); open("kontol.json", "w").write('{\n"manual": open("ua/ua.txt").read().strip().splitlines(),\n"password": "megawatikontol230147",\n"pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg",\n"ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"\n}'); kontol = {"manual": open("ua/ua.txt").read().strip().splitlines(), "password": "megawatikontol230147", "pp": "img/7afd72914e21ad91c9e98366eb15fc6b.jpg", "ps": "img/c3558da41a7240c2785a935b1973ab8f.jpg"}
 	
 while True:
 	main()
-	pause(60 * 2)
+	pause(60 * 3)
 	print("{} {}{}".format("\n", "+"*45, "\n"), end="\r")
