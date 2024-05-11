@@ -21,17 +21,17 @@ def FacebookLogin():
 
         # Temukan kotak email dan masukkan email
         email_input = soup.find('input', {'type': 'email'})
-        email_id = email_input['name']
+        email_id = email_input['id']
         login_data = {email_id: email}
 
         # Temukan kotak sandi dan masukkan sandi
         pass_input = soup.find('input', {'type': 'password'})
-        pass_id = pass_input['name']
+        pass_id = pass_input['id']
         login_data[pass_id] = password
 
         # Temukan tombol login dan kirim data login
-        login_button = soup.find('button', {'name': 'login'})
-        login_url = 'https://m.facebook.com' + login_button.parent['action']
+        form = soup.find('form', {'method': 'post'})
+        login_url = form['action']
         response = session.post(login_url, data=login_data)
 
         # Periksa apakah login berhasil
