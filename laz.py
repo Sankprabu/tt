@@ -1,22 +1,12 @@
 import json
 import random
-import subprocess
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from fake_useragent import UserAgent
 import os
-
-# Path to your webdriver
-webdriver_path = '/storage/emulated/0/chromedriver'
-# Make chromedriver executable
-subprocess.run(['chmod', '+x', webdriver_path])
-
-# Sekarang Anda dapat mencetak webdriver_path
-print(webdriver_path)
 
 # URL login mobile Facebook
 facebook_mobile_login_url = 'https://m.facebook.com/login/?next&ref=dbl&fl&login_from_aymh=1&refid=8'
@@ -46,11 +36,8 @@ else:
 chrome_options = Options()
 chrome_options.add_argument(f'user-agent={user_agent}')
 
-# Inisialisasi Service
-service = Service(executable_path=webdriver_path)
-
-# Inisialisasi WebDriver dengan Service
-driver = webdriver.Chrome(service=service, options=chrome_options)
+# Inisialisasi WebDriver
+driver = webdriver.Chrome(options=chrome_options)
 
 try:
     # Login to Facebook
