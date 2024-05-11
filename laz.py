@@ -14,23 +14,27 @@ def FacebookLogin():
         with open('akun.txt', 'r') as file:
             email, password = file.readline().strip().split(',')
 
-        # Initialize WebDriver
-        driver = webdriver.Chrome(ChromeDriverManager().install())
+        # Inisialisasi WebDriver dengan MiniBrowser
+        driver = webdriver.Chrome()
 
-        # Opening Facebook.
+        # Buka MiniBrowser dan buka URL Facebook
         driver.get('https://www.facebook.com/')
         print(f"{fg('yellow_1')}Facebook Opened!{attr('reset')}")
-        
-        # Entering Email and Password
+
+        # Menunggu hingga halaman Facebook dimuat sepenuhnya
+        time.sleep(2)
+
+        # Temukan kotak email dan masukkan email
         username_box = driver.find_element(By.ID, 'email')
         username_box.send_keys(email)
         print(f"{fg('yellow_1')}Email entered{attr('reset')}")
 
+        # Temukan kotak sandi dan masukkan sandi
         password_box = driver.find_element(By.ID, 'pass')
         password_box.send_keys(password)
         print(f"{fg('yellow_1')}Password entered{attr('reset')}")
 
-        # Pressing The Login Button
+        # Temukan tombol login dan klik
         login_button = driver.find_element(By.ID, 'loginbutton')
         login_button.click()
 
