@@ -10,7 +10,7 @@ from fake_useragent import UserAgent
 import os
 
 # Path to your webdriver
-webdriver_path = '/storage/emulated/0/chromedriver/chromedriver'
+webdriver_path = '/storage/emulated/0/chromedriver'
 
 # URL login mobile Facebook
 facebook_mobile_login_url = 'https://m.facebook.com/login/?next&ref=dbl&fl&login_from_aymh=1&refid=8'
