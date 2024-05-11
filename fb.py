@@ -7,7 +7,7 @@ def FacebookLogin():
             email, password = file.readline().strip().split(',')
 
         # URL untuk mengirim permintaan login
-        login_url = 'https://m.facebook.com/login/device-based/login/async/?refsrc=deprecated&amp;lwv=100'
+        login_url = 'https://m.facebook.com/login
 
         # Data yang akan dikirimkan dalam permintaan POST
         data = {
