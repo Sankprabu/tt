@@ -1,54 +1,46 @@
 import time
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
-from colored import fg, attr
+from colored import fg, bg, attr  # pip install colored
+# Initiliaze Webdriver
+try:
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+except:
+    driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
+
 
 def FacebookLogin():
     try:
-        # Baca email dan password dari file akun.txt
-        with open('akun.txt', 'r') as file:
-            email, password = file.readline().strip().split(',')
+        # Enter Your Email ID And Password
+        user = input(f"{fg('green_1')}Enter Email Id:{attr('reset')}")
+        password = input(f"{fg('green_1')}Enter Password:{attr('reset')}")
 
-        # Inisialisasi WebDriver dengan GeckoDriverManager
-        driver = webdriver.Firefox()
+        # Opening Facebook.
+        driver.get('https://www.facebook.com/')
+        print(f"{fg('yellow_1')}Faceboook Opened!{attr('reset')}")
+        time.sleep(1)
 
-        # Buka Facebook Mobile di browser
-        driver.get('https://m.facebook.com/')
-        print(f"{fg('yellow_1')}Facebook Mobile Opened!{attr('reset')}")
-
-        # Menunggu hingga halaman Facebook dimuat sepenuhnya
-        time.sleep(2)
-
-        # Temukan kotak email dan masukkan email
-        username_box = driver.find_element(By.ID, 'm_login_email')
-        username_box.send_keys(email)
+        # Entering Email and Password
+        username_box = driver.find_element_by_id('email')
+        username_box.send_keys(user)
         print(f"{fg('yellow_1')}Email entered{attr('reset')}")
+        time.sleep(1)
 
-        # Temukan kotak sandi dan masukkan sandi
-        password_box = driver.find_element(By.ID, 'm_login_password')
+        password_box = driver.find_element_by_id('pass')
         password_box.send_keys(password)
         print(f"{fg('yellow_1')}Password entered{attr('reset')}")
 
-        # Temukan tombol login dan klik
-        login_button = driver.find_element(By.NAME, 'login')
-        login_button.click()
+        # Pressing The Login Button
+        login_box = driver.find_element_by_id('loginbutton')
+        login_box.click()
 
-        print("Done")
-        input(f"{fg('green_1')}Press anything to quit{attr('reset')}")
+        print(f"Done")
+        input("{fg('green_1')}Press anything to quit{attr('reset')}")
         driver.quit()
         print(f"{fg('green_1')}Finished{attr('reset')}")
+    except Exception:
+        print(f"{fg('red_1')}Failed to execute script{attr('reset')}")
 
-    except FileNotFoundError:
-        print(f"{fg('red_1')}File 'akun.txt' not found.{attr('reset')}")
-    except ValueError:
-        print(f"{fg('red_1')}Invalid format in 'akun.txt'. Make sure email and password are separated by a comma.{attr('reset')}")
-    except NoSuchElementException as e:
-        print(f"{fg('red_1')}Failed to find element: {e}{attr('reset')}")
-    except Exception as e:
-        print(f"{fg('red_1')}Failed to execute script: {e}{attr('reset')}")
 
 FacebookLogin()
