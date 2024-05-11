@@ -7,10 +7,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from fake_useragent import UserAgent
 import os
+from selenium.webdriver.chrome.service import Service
 
 # Path to your webdriver
 webdriver_path = '/storage/emulated/0/chromedriver'
+# Inisialisasi Service
+service = Service('/storage/emulated/0/chromedriver')
 
+# Inisialisasi WebDriver dengan Service
+driver = webdriver.Chrome(service=service, options=chrome_options)
 # URL login mobile Facebook
 facebook_mobile_login_url = 'https://m.facebook.com/login/?next&ref=dbl&fl&login_from_aymh=1&refid=8'
 
