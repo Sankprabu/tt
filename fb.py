@@ -1,5 +1,6 @@
-import requests
-from bs4 import BeautifulSoup
+import time
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 from colored import fg, attr
 
 def FacebookLogin():
@@ -8,38 +9,35 @@ def FacebookLogin():
         with open('akun.txt', 'r') as file:
             email, password = file.readline().strip().split(',')
 
-        # Membuat sesi HTTP
-        session = requests.Session()
+        # Inisialisasi WebDriver dengan Firefox
+        driver = webdriver.Firefox()
 
-        # Membuka halaman login Facebook Mobile
-        response = session.get('https://m.facebook.com/login/')
+        # Buka halaman login Facebook Mobile
+        driver.get('https://m.facebook.com/login/')
 
-        # Parsing HTML menggunakan BeautifulSoup
-        soup = BeautifulSoup(response.content, 'html.parser')
+        # Temukan kotak email dan masukkan email
+        email_box = driver.find_element_by_name('email')
+        email_box.send_keys(email)
 
-        # Temukan form login
-        login_form = soup.find('form', {'method': 'post'})
+        # Temukan kotak sandi dan masukkan sandi
+        pass_box = driver.find_element_by_name('pass')
+        pass_box.send_keys(password)
 
-        if login_form:
-            # Temukan kotak email dan masukkan email
-            email_input = login_form.find('input', {'type': 'email'})
-            email_id = email_input['name']
+        # Klik tombol login
+        login_button = driver.find_element_by_name('login')
+        login_button.click()
 
-            # Temukan kotak sandi dan masukkan sandi
-            pass_input = login_form.find('input', {'type': 'password'})
-            pass_id = pass_input['name']
+        # Tunggu beberapa saat untuk proses login
+        time.sleep(5)
 
-            # Kirim data login
-            login_data = {email_id: email, pass_id: password}
-            response = session.post('https://m.facebook.com/login/', data=login_data)
-
-            # Periksa apakah login berhasil
-            if 'home.php' in response.url:
-                print("Login Successful")
-            else:
-                print("Login Failed")
+        # Periksa apakah login berhasil dengan melihat URL
+        if "login_attempt" not in driver.current_url:
+            print("Login Successful")
         else:
-            print("Login form not found")
+            print("Login Failed")
+
+        # Tutup browser
+        driver.quit()
 
     except FileNotFoundError:
         print(f"{fg('red_1')}File 'akun.txt' not found.{attr('reset')}")
