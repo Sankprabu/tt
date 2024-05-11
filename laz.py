@@ -9,6 +9,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from fake_useragent import UserAgent
 import os
 
+chmod +x /storage/emulated/0/chromedriver
+
 # Path to your webdriver
 webdriver_path = '/storage/emulated/0/chromedriver'
 
