@@ -41,10 +41,10 @@ chrome_options = Options()
 chrome_options.add_argument(f'user-agent={user_agent}')
 
 # Inisialisasi Service
-service = Service(webdriver_path)
+service = Service('/storage/emulated/0/chromedriver/chromedriver')
 
 # Inisialisasi WebDriver dengan Service
-driver = webdriver.Chrome(executable_path=webdriver_path, options=chrome_options)
+driver = webdriver.Chrome(service=service, options=chrome_options)
 
 
 try:
