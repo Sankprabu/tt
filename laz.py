@@ -1,60 +1,51 @@
-
-
-
-
-
-
-
-import os
+import getpass
+import time
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
+from colored import fg, attr
 
-# Set environment variable PATH to directory containing Chromedriver
-chrome_driver_path = '/storage/emulated/0/chromedriver'
-os.environ['PATH'] = f'{chrome_driver_path}:{os.environ["PATH"]}'
+def FacebookLogin():
+    try:
+        # Baca email dan password dari file akun.txt
+        with open('akun.txt', 'r') as file:
+            email, password = file.readline().strip().split(',')
 
-# URL login mobile Facebook
-facebook_mobile_login_url = 'https://m.facebook.com/login/?next&ref=dbl&fl&login_from_aymh=1&refid=8'
+        # Initialize WebDriver
+        driver = webdriver.Chrome(ChromeDriverManager().install())
 
-# Baca email dan password dari file akun.txt
-with open('akun.txt', 'r') as file:
-    credentials = file.readline().strip().split(',')  # Membaca satu baris, memisahkan email dan password dengan koma
-    email = credentials[0]  # Mengambil email
-    password = credentials[1]  # Mengambil password
+        # Opening Facebook.
+        driver.get('https://www.facebook.com/')
+        print(f"{fg('yellow_1')}Facebook Opened!{attr('reset')}")
+        
+        # Entering Email and Password
+        username_box = driver.find_element(By.ID, 'email')
+        username_box.send_keys(email)
+        print(f"{fg('yellow_1')}Email entered{attr('reset')}")
 
-# Set Chrome options
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument('--disable-dev-shm-usage')
+        password_box = driver.find_element(By.ID, 'pass')
+        password_box.send_keys(password)
+        print(f"{fg('yellow_1')}Password entered{attr('reset')}")
 
-# Initialize Chrome WebDriver
-driver = webdriver.Chrome(options=chrome_options)
+        # Pressing The Login Button
+        login_button = driver.find_element(By.ID, 'loginbutton')
+        login_button.click()
 
-# Open Facebook login page
-driver.get(facebook_mobile_login_url)
+        print("Done")
+        input(f"{fg('green_1')}Press anything to quit{attr('reset')}")
+        driver.quit()
+        print(f"{fg('green_1')}Finished{attr('reset')}")
 
-# Find username and password fields and login button
-username_field = driver.find_element_by_name('email')
-password_field = driver.find_element_by_name('pass')
-login_button = driver.find_element_by_name('login')
+    except FileNotFoundError:
+        print(f"{fg('red_1')}File 'akun.txt' not found.{attr('reset')}")
+    except ValueError:
+        print(f"{fg('red_1')}Invalid format in 'akun.txt'. Make sure email and password are separated by a comma.{attr('reset')}")
+    except NoSuchElementException as e:
+        print(f"{fg('red_1')}Failed to find element: {e}{attr('reset')}")
+    except Exception as e:
+        print(f"{fg('red_1')}Failed to execute script: {e}{attr('reset')}")
 
-# Input username and password
-username_field.send_keys(email)
-password_field.send_keys(password)
-
-# Click login button
-login_button.click()
-
-# Wait for the login process to complete
-driver.implicitly_wait(10)
-
-# Check if login was successful
-if 'm.facebook.com' in driver.current_url:
-    print("Login berhasil!")
-else:
-    print("Gagal login.")
-
-# Your further automation steps can be added here, such as navigating to other pages or interacting with elements.
-# For example:
-# driver.get('https://m.facebook.com/your_desired_page')
-
-# Don't forget to close the WebDriver after you finish
-# driver.quit()
+FacebookLogin()
