@@ -5,7 +5,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 from colored import fg, attr
 
 def FacebookLogin():
@@ -14,10 +14,10 @@ def FacebookLogin():
         with open('akun.txt', 'r') as file:
             email, password = file.readline().strip().split(',')
 
-        # Inisialisasi WebDriver dengan MiniBrowser
-        driver = webdriver.Chrome()
+        # Inisialisasi WebDriver dengan GeckoDriver
+        driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
 
-        # Buka MiniBrowser dan buka URL Facebook
+        # Buka Facebook di browser
         driver.get('https://www.facebook.com/')
         print(f"{fg('yellow_1')}Facebook Opened!{attr('reset')}")
 
