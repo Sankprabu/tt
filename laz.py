@@ -11,11 +11,12 @@ from fake_useragent import UserAgent
 import os
 
 # Path to your webdriver
-print(webdriver_path)
-
 webdriver_path = '/storage/emulated/0/chromedriver'
 # Make chromedriver executable
 subprocess.run(['chmod', '+x', webdriver_path])
+
+# Sekarang Anda dapat mencetak webdriver_path
+print(webdriver_path)
 
 # URL login mobile Facebook
 facebook_mobile_login_url = 'https://m.facebook.com/login/?next&ref=dbl&fl&login_from_aymh=1&refid=8'
