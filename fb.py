@@ -17,21 +17,21 @@ def FacebookLogin():
         # Parsing HTML menggunakan BeautifulSoup
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        # Temukan kotak email dan masukkan email
-        email_input = soup.find('input', {'type': 'email'})
-        email_id = email_input['id']
-        login_data = {email_id: email}
+        # Temukan form login
+        login_form = soup.find('form', {'method': 'post'})
 
-        # Temukan kotak sandi dan masukkan sandi
-        pass_input = soup.find('input', {'type': 'password'})
-        pass_id = pass_input['id']
-        login_data[pass_id] = password
+        if login_form:
+            # Temukan kotak email dan masukkan email
+            email_input = login_form.find('input', {'type': 'email'})
+            email_id = email_input['name']
 
-        # Temukan tombol login dan kirim data login
-        form = soup.find('form', {'method': 'post'})
-        if form:
-            login_url = form['action']
-            response = session.post(login_url, data=login_data)
+            # Temukan kotak sandi dan masukkan sandi
+            pass_input = login_form.find('input', {'type': 'password'})
+            pass_id = pass_input['name']
+
+            # Kirim data login
+            login_data = {email_id: email, pass_id: password}
+            response = session.post('https://m.facebook.com/login/', data=login_data)
 
             # Periksa apakah login berhasil
             if 'home.php' in response.url:
