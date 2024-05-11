@@ -1,5 +1,8 @@
 from selenium import webdriver
 
+# Path ke Chromedriver
+chrome_driver_path = '/storage/emulated/0/chromedriver'
+
 # URL login mobile Facebook
 facebook_mobile_login_url = 'https://m.facebook.com/login/?next&ref=dbl&fl&login_from_aymh=1&refid=8'
 
@@ -13,8 +16,8 @@ with open('akun.txt', 'r') as file:
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--disable-dev-shm-usage')
 
-# Initialize Chrome WebDriver with ChromeDriver
-driver = webdriver.Chrome(options=chrome_options)
+# Initialize Chrome WebDriver dengan path Chromedriver yang ditentukan
+driver = webdriver.Chrome(executable_path=chrome_driver_path, options=chrome_options)
 
 # Open Facebook login page
 driver.get(facebook_mobile_login_url)
