@@ -9,8 +9,12 @@ with open('akun.txt', 'r') as file:
     email = credentials[0]  # Mengambil email
     password = credentials[1]  # Mengambil password
 
-# Initialize Firefox WebDriver with GeckoDriver
-driver = webdriver.Firefox()
+# Set Chrome options
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--disable-dev-shm-usage')
+
+# Initialize Chrome WebDriver with ChromeDriver
+driver = webdriver.Chrome(options=chrome_options)
 
 # Open Facebook login page
 driver.get(facebook_mobile_login_url)
@@ -28,7 +32,6 @@ password_field.send_keys(password)
 login_button.click()
 
 # Wait for the login process to complete
-# (You might need to customize this wait condition based on your specific scenario)
 driver.implicitly_wait(10)
 
 # Check if login was successful
