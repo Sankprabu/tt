@@ -13,8 +13,8 @@ def FacebookLogin():
         with open('akun.txt', 'r') as file:
             email, password = file.readline().strip().split(',')
 
-        # Inisialisasi WebDriver dengan GeckoDriver
-        driver = webdriver.Firefox()
+        # Inisialisasi WebDriver dengan GeckoDriverManager
+        driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
 
         # Buka Facebook Mobile di browser
         driver.get('https://m.facebook.com/')
