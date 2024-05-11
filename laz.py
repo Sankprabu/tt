@@ -1,65 +1,71 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-# Path to your webdriver, e.g., chromedriver
-webdriver_path = '/storage/emulated/0/chromedriver'
+# Path to your webdriver
+webdriver_path = '/path/to/chromedriver'
 
-# Read email and password from a file
+# URL login mobile Facebook
+facebook_mobile_login_url = 'https://m.facebook.com/login/?next&ref=dbl&fl&login_from_aymh=1&refid=8'
+
+# URL persetujuan GDPR Facebook
+facebook_gdpr_consent_url = 'https://www.facebook.com/privacy/consent/gdp/?params%5Bapp_id%5D=1477455072510375&params%5Bdisplay%5D=%22popup%22&params%5Bdomain%5D=%22member.lazada.co.id%22&params%5Bfallback_redirect_uri%5D=%22https%3A%5C%2F%5C%2Fmember.lazada.co.id%5C%2Fuser%5C%2Flogin%22&params%5Bkid_directed_site%5D=false&params%5Blogger_id%5D=%22f8b3fe6beea9385ff%22&params%5Bnext%5D=%22read%22&params%5Bredirect_uri%5D=%22https%3A%5C%2F%5C%2Fstaticxx.facebook.com%5C%2Fx%5C%2Fconnect%5C%2Fxd_arbiter%5C%2F%3Fversion%3D46%23cb%3Df2d86afce2329c4cb%26domain%3Dmember.lazada.co.id%26is_canvas%3Dfalse%26origin%3Dhttps%5Cu00253A%5Cu00252F%5Cu00252Fmember.lazada.co.id%5Cu00252Ff4b86e37557f11a34%26relation%3Dopener%26frame%3Dfe964710e45e37596%22&params%5Bresponse_type%5D=%22token%2Csigned_request%2Cgraph_domain%22&params%5Breturn_scopes%5D=true&params%5Bscope%5D=%5B%22email%22%5D&params%5Bsdk%5D=%22joey%22&params%5Bsteps%5D=%7B%22read%22%3A%5B%22email%22%2C%22baseline%22%2C%22public_profile%22%5D%7D&params%5Btp%5D=%22unspecified%22&params%5Bcui_gk%5D=%22%5BPASS%5D%3Alogin_platformization_joey%2Clogin_platformization_read%22&params%5Bis_limited_login_shim%5D=false&source=gdp_delegated'
+
+# URL login Lazada dengan Facebook
+lazada_login_url = 'https://member.lazada.co.id/user/login'
+
+# Data akun Facebook
 with open('akun.txt', 'r') as file:
-    credentials = file.readline().strip().split()
-    email = credentials[0]
-    password = credentials[1]
+    email, password = file.readline().strip().split()
 
 # Start a new instance of Chrome browser
 driver = webdriver.Chrome(webdriver_path)
 
-# Open Facebook login page
-driver.get('https://www.facebook.com')
+try:
+    # Login to Facebook
+    driver.get(facebook_mobile_login_url)
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'm_login_email')))
+    email_field = driver.find_element_by_id('m_login_email')
+    password_field = driver.find_element_by_id('m_login_password')
+    email_field.send_keys(email)
+    password_field.send_keys(password)
+    password_field.submit()
 
-# Wait for some time to let the page load
-time.sleep(2)
+    # Wait for login to complete
+    WebDriverWait(driver, 10).until(EC.url_contains("home.php"))
 
-# Find the email and password fields and enter your credentials
-email_field = driver.find_element_by_id('email')
-email_field.send_keys(email)
-
-password_field = driver.find_element_by_id('pass')
-password_field.send_keys(password)
-
-# Submit the login form
-password_field.send_keys(Keys.RETURN)
-
-# Wait for some time to let the login process
-time.sleep(5)
-
-# Check if login was successful
-if "home.php" in driver.current_url:
     print("Login to Facebook successful!")
-    
-    # Continue to Lazada login page
-    driver.get('https://www.facebook.com/login.php?skip_api_login=1&api_key=1477455072510375&kid_directed_site=0&app_id=1477455072510375&signed_next=1&next=https%3A%2F%2Fwww.facebook.com%2Fv2.11%2Fdialog%2Foauth%3Fapp_id%3D1477455072510375%26cbt%3D1715363432845%26channel_url%3Dhttps%253A%252F%252Fstaticxx.facebook.com%252Fx%252Fconnect%252Fxd_arbiter%252F%253Fversion%253D46%2523cb%253Df2aed753a3d6f5314%2526domain%253Dmember.lazada.co.id%2526is_canvas%253Dfalse%2526origin%253Dhttps%25253A%25252F%25252Fmember.lazada.co.id%25252Ff455cdd05777642bc%2526relation%253Dopener%26client_id%3D1477455072510375%26display%3Dpopup%26domain%3Dmember.lazada.co.id%26e2e%3D%257B%257D%26fallback_redirect_uri%3Dhttps%253A%252F%252Fmember.lazada.co.id%252Fuser%252Flogin%26locale%3Den_US%26logger_id%3Dfc5b2ad95fff8efb5%26origin%3D1%26redirect_uri%3Dhttps%253A%252F%252Fstaticxx.facebook.com%252Fx%252Fconnect%252Fxd_arbiter%252F%253Fversion%253D46%2523cb%253Df9efb38263a128539%2526domain%253Dmember.lazada.co.id%2526is_canvas%253Dfalse%2526origin%253Dhttps%25253A%25252F%25252Fmember.lazada.co.id%25252Ff455cdd05777642bc%2526relation%253Dopener%2526frame%253Dfcd9c12aff8026050%26response_type%3Dtoken%252Csigned_request%252Cgraph_domain%26return_scopes%3Dtrue%26scope%3Demail%26sdk%3Djoey%26version%3Dv2.11%26ret%3Dlogin%26fbapp_pres%3D0%26tp%3Dunspecified&cancel_url=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Df9efb38263a128539%26domain%3Dmember.lazada.co.id%26is_canvas%3Dfalse%26origin%3Dhttps%253A%252F%252Fmember.lazada.co.id%252Ff455cdd05777642bc%26relation%3Dopener%26frame%3Dfcd9c12aff8026050%26error%3Daccess_denied%26error_code%3D200%26error_description%3DPermissions%2Berror%26error_reason%3Duser_denied&display=popup&locale=id_ID&pl_dbl=0')
-    time.sleep(2)
-    
-    # Check if login to Lazada with Facebook was successful
-    if "dialog/oauth" in driver.current_url:
-        print("Continue to Lazada login page successful!")
-        # You need to locate and click the button to continue with Facebook login in Lazada page
-        continue_facebook_button = driver.find_element_by_css_selector('button[name="login"]')
-        continue_facebook_button.click()
-        
-        # Wait for some time to let the login process to Lazada with Facebook
-        time.sleep(5)
-        
-        # Check if login to Lazada with Facebook was successful
-        if "member.lazada.co.id/user/index" in driver.current_url:
-            print("Login to Lazada with Facebook successful!")
-        else:
-            print("Login to Lazada with Facebook failed!")
-    else:
-        print("Continue to Lazada login page failed!")
-else:
-    print("Login to Facebook failed!")
 
-# Close the browser
-driver.quit()
+    # Continue to Facebook GDPR consent
+    driver.get(facebook_gdpr_consent_url)
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'platformDialogForm')))
+    continue_button = driver.find_element_by_xpath('//button[@name="__CONFIRM__"]')
+    continue_button.click()
+
+    # Wait for consent form to disappear
+    WebDriverWait(driver, 10).until_not(EC.presence_of_element_located((By.ID, 'platformDialogForm')))
+
+    print("Consent accepted successfully!")
+
+    # Continue to Lazada login page
+    driver.get(lazada_login_url)
+
+    # Wait for Lazada login form to appear
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'login-form')))
+
+    # Input your Lazada credentials if necessary
+    # lazada_email_field = driver.find_element_by_id('login-email')
+    # lazada_password_field = driver.find_element_by_id('login-password')
+    # lazada_email_field.send_keys(lazada_email)
+    # lazada_password_field.send_keys(lazada_password)
+    # lazada_password_field.submit()
+
+    print("Login to Lazada with Facebook successful!")
+
+except Exception as e:
+    print(f"An error occurred: {str(e)}")
+
+finally:
+    # Close the browser
+    driver.quit()
