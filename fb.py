@@ -1,7 +1,4 @@
-import time
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from colored import fg, attr
+import requests
 
 def FacebookLogin():
     try:
@@ -9,41 +6,38 @@ def FacebookLogin():
         with open('akun.txt', 'r') as file:
             email, password = file.readline().strip().split(',')
 
-        # Inisialisasi WebDriver dengan Firefox
-        driver = webdriver.Firefox()
+        # URL untuk mengirim permintaan login
+        login_url = 'https://m.facebook.com/login/device-based/login/async/?refsrc=deprecated&amp;lwv=100'
 
-        # Buka halaman login Facebook Mobile
-        driver.get('https://m.facebook.com/login/')
+        # Data yang akan dikirimkan dalam permintaan POST
+        data = {
+            'email': email,
+            'pass': password,
+            'lsd': 'AVro0WNYaCM',
+            'jazoest': '2919',
+            'm_ts': '1715444401',
+            'li': 'sZo_ZhwFPCPV8wmk39pZ8cFq',
+            'try_number': '0',
+            'unrecognized_tries': '0'
+        }
 
-        # Temukan kotak email dan masukkan email
-        email_box = driver.find_element_by_name('email')
-        email_box.send_keys(email)
+        # Kirim permintaan POST untuk login
+        response = requests.post(login_url, data=data)
 
-        # Temukan kotak sandi dan masukkan sandi
-        pass_box = driver.find_element_by_name('pass')
-        pass_box.send_keys(password)
-
-        # Klik tombol login
-        login_button = driver.find_element_by_name('login')
-        login_button.click()
-
-        # Tunggu beberapa saat untuk proses login
-        time.sleep(5)
-
-        # Periksa apakah login berhasil dengan melihat URL
-        if "login_attempt" not in driver.current_url:
-            print("Login Successful")
+        # Periksa apakah berhasil login dengan memeriksa URL setelah login
+        if response.status_code == 200:
+            if 'c_user' in response.cookies.get_dict():
+                print("Login Successful")
+            else:
+                print("Login Failed: Invalid credentials")
         else:
-            print("Login Failed")
-
-        # Tutup browser
-        driver.quit()
+            print("Login Failed: Server error")
 
     except FileNotFoundError:
-        print(f"{fg('red_1')}File 'akun.txt' not found.{attr('reset')}")
+        print("File 'akun.txt' not found.")
     except ValueError:
-        print(f"{fg('red_1')}Invalid format in 'akun.txt'. Make sure email and password are separated by a comma.{attr('reset')}")
+        print("Invalid format in 'akun.txt'. Make sure email and password are separated by a comma.")
     except Exception as e:
-        print(f"{fg('red_1')}Failed to execute script: {e}{attr('reset')}")
+        print(f"Failed to execute script: {e}")
 
 FacebookLogin()
