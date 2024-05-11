@@ -1,5 +1,10 @@
 import json
 import requests
+import logging
+import time
+
+# Configure logging
+logging.basicConfig(filename='login.log', level=logging.ERROR)
 
 def get_user_agent():
     try:
@@ -7,10 +12,10 @@ def get_user_agent():
             data = json.load(file)
             return data.get('user_agent', '')
     except FileNotFoundError:
-        print("File 'juragan.json' not found.")
+        logging.error("File 'juragan.json' not found.")
         return ''
     except Exception as e:
-        print(f"Failed to read user agent: {e}")
+        logging.error(f"Failed to read user agent: {e}")
         return ''
 
 def FacebookLogin():
@@ -18,19 +23,16 @@ def FacebookLogin():
         user_agent = get_user_agent()
 
         if not user_agent:
-            print("User-Agent not found. Make sure 'juragan.json' contains the user agent.")
+            logging.error("User-Agent not found. Make sure 'juragan.json' contains the user agent.")
             return
 
-        # Baca email dan password dari file akun.txt
         with open('akun.txt', 'r') as file:
             lines = file.readlines()
 
         for line in lines:
             email, password = line.strip().split(',')
-            # URL untuk mengirim permintaan login
             login_url = 'https://m.facebook.com/login/device-based/login/async/?refsrc=deprecated&amp;lwv=100'
 
-            # Data yang akan dikirimkan dalam permintaan POST
             data = {
                 'email': email,
                 'pass': password,
@@ -42,28 +44,28 @@ def FacebookLogin():
                 'unrecognized_tries': '0'
             }
 
-            # Header dengan User-Agent
             headers = {
                 'User-Agent': user_agent
             }
 
-            # Kirim permintaan POST untuk login
             response = requests.post(login_url, data=data, headers=headers)
 
-            # Periksa apakah berhasil login dengan memeriksa URL setelah login
             if response.status_code == 200:
                 if 'c_user' in response.cookies.get_dict():
-                    print(f"Login Successful for email: {email}")
+                    logging.info(f"Login Successful for email: {email}")
                 else:
-                    print(f"Login Failed: Invalid credentials for email: {email}")
+                    logging.error(f"Login Failed: Invalid credentials for email: {email}")
             else:
-                print(f"Login Failed: Server error for email: {email}")
+                logging.error(f"Login Failed: Server error for email: {email}")
+            
+            # Introduce a delay between login attempts
+            time.sleep(1)
 
     except FileNotFoundError:
-        print("File 'akun.txt' not found.")
+        logging.error("File 'akun.txt' not found.")
     except ValueError:
-        print("Invalid format in 'akun.txt'. Make sure email and password are separated by a comma.")
+        logging.error("Invalid format in 'akun.txt'. Make sure email and password are separated by a comma.")
     except Exception as e:
-        print(f"Failed to execute script: {e}")
+        logging.error(f"Failed to execute script: {e}")
 
 FacebookLogin()
