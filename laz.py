@@ -44,7 +44,7 @@ chrome_options = Options()
 chrome_options.add_argument(f'user-agent={user_agent}')
 
 # Inisialisasi Service
-service = Service(webdriver_path)
+service = Service(executable_path=webdriver_path)
 
 # Inisialisasi WebDriver dengan Service
 driver = webdriver.Chrome(service=service, options=chrome_options)
