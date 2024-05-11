@@ -1,4 +1,3 @@
-import time
 import requests
 from bs4 import BeautifulSoup
 from colored import fg, attr
@@ -13,8 +12,7 @@ def FacebookLogin():
         session = requests.Session()
 
         # Membuka halaman login Facebook Mobile
-        response = session.get('https://m.facebook.com/')
-        print(f"{fg('yellow_1')}Facebook Mobile Opened!{attr('reset')}")
+        response = session.get('https://m.facebook.com/login/')
 
         # Parsing HTML menggunakan BeautifulSoup
         soup = BeautifulSoup(response.content, 'html.parser')
@@ -31,14 +29,17 @@ def FacebookLogin():
 
         # Temukan tombol login dan kirim data login
         form = soup.find('form', {'method': 'post'})
-        login_url = form['action']
-        response = session.post(login_url, data=login_data)
+        if form:
+            login_url = form['action']
+            response = session.post(login_url, data=login_data)
 
-        # Periksa apakah login berhasil
-        if 'home.php' in response.url:
-            print("Login Successful")
+            # Periksa apakah login berhasil
+            if 'home.php' in response.url:
+                print("Login Successful")
+            else:
+                print("Login Failed")
         else:
-            print("Login Failed")
+            print("Login form not found")
 
     except FileNotFoundError:
         print(f"{fg('red_1')}File 'akun.txt' not found.{attr('reset')}")
