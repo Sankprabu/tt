@@ -1,21 +1,17 @@
 import json
 import random
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from fake_useragent import UserAgent
 import os
-from selenium.webdriver.chrome.service import Service
 
 # Path to your webdriver
 webdriver_path = '/storage/emulated/0/chromedriver'
-# Inisialisasi Service
-service = Service('/storage/emulated/0/chromedriver')
 
-# Inisialisasi WebDriver dengan Service
-driver = webdriver.Chrome(service=service, options=chrome_options)
 # URL login mobile Facebook
 facebook_mobile_login_url = 'https://m.facebook.com/login/?next&ref=dbl&fl&login_from_aymh=1&refid=8'
 
@@ -44,8 +40,11 @@ else:
 chrome_options = Options()
 chrome_options.add_argument(f'user-agent={user_agent}')
 
-# Start a new instance of Chrome browser with the configured options
-driver = webdriver.Chrome(webdriver_path, options=chrome_options)
+# Inisialisasi Service
+service = Service(webdriver_path)
+
+# Inisialisasi WebDriver dengan Service
+driver = webdriver.Chrome(service=service, options=chrome_options)
 
 try:
     # Login to Facebook
