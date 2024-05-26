@@ -1,76 +1,86 @@
-import os,sys,time,random,requests
-from bs4 import BeautifulSoup as bs
+import time
+import requests
+from urllib.parse import urlencode
 
-url='https://m.facebook.com'
-xurl=url+'/login.php'
-def banner():
-	os.system('clear')
-	_="-"*44
-	ban=f"""
-	\x1b[1;91m
-\x1b[1;92m
-\x1b[1;96m
+# Telegram
 
-█▀▀ █▄▄   █░░ █▀█ █▀▀ █ █▄░█
-█▀░ █▄█   █▄▄ █▄█ █▄█ █ █░▀█
-\x1b[1;93m
-\x1b[1;92m         OWNER BY OKAMISPADE
-\x1b[1;91m-----------------------------------------------
-\x1b[1;97m> Author : Spade Dy
-\x1b[1;97m> Github : https://github.com/OkamiSpade (Original Code)
-\x1b[1;97m> Facebok: Karque12
-\x1b[1;97m> Version: FB LOGIN
-\x1b[0;97m-----------------------------------------------
-"""
-	print(ban)
-	
-	#it can possible change you're user agents
-	#Search Your Google "MY USER AGENT"
-	
-ua="Mozilla/5.0 (Linux; Android 4.1.2; GT-I8552 Build/JZO54K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36"
-def login():
-	banner()
-	user=input('[✦] Username or Email: ')
-	pswd=input('[✦] Password: ')
-	try:
-		req=requests.Session()
-		req.headers.update({
-		'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-		'accept-language': 'en_US','cache-control': 'max-age=0',
-		'sec-ch-ua': '"Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"',
-		'sec-ch-ua-mobile': '?0','sec-ch-ua-platform': "Windows",
-		'sec-fetch-dest': 'document','sec-fetch-mode': 'navigate',
-		'sec-fetch-site': 'same-origin','sec-fetch-user': '?1','upgrade-insecure-requests': '1',
-		'user-agent': ua})
-		with req.get(url) as response_body:
-			inspect=bs(response_body.text,'html.parser')
-			lsd_key=inspect.find('input',{'name':'lsd'})['value']
-			jazoest_key=inspect.find('input',{'name':'jazoest'})['value']
-			m_ts_key=inspect.find('input',{'name':'m_ts'})['value']
-			li_key=inspect.find('input',{'name':'li'})['value']
-			try_number_key=inspect.find('input',{'name':'try_number'})['value']
-			unrecognized_tries_key=inspect.find('input',{'name':'unrecognized_tries'})['value']
-			bi_xrwh_key=inspect.find('input',{'name':'bi_xrwh'})['value']
-			data={
-			'lsd':lsd_key,'jazoest':jazoest_key,
-			'm_ts':m_ts_key,'li':li_key,
-			'try_number':try_number_key,
-			'unrecognized_tries':unrecognized_tries_key,
-			'bi_xrwh':bi_xrwh_key,'email':user,
-			'pass':pswd,'login':"submit"}
-			response_body2=req.post(xurl,data=data,allow_redirects=True,timeout=300)
-			open("resopnse.html",'wb').write(response_body2.content)
-			cookie=str(req.cookies.get_dict())
-			if 'checkpoint' in cookie:sys.exit("\033[1;31mAccount terminated by Facebook!\033[0m")
-			elif 'c_user' in cookie:
-				print(f'\n   [\033[38;5;83mSuccessfully Log In!\033[0m] \033[0m\n\n')
-				os.system('xdg-open https://facebook.com/karque12')
-				time.sleep(2)
-				os.system('xdg-open https://github.com/okamispade')
-				time.sleep(2)
-			else:
-				sys.exit("\033[38;5;208mIncorrect details\033[0m")
-	except requests.exceptions.ConnectionError:sys.exit('No internet')
-	
-if __name__ == "__main__":
-    login()
+# @NamasteHacker
+
+
+Email=input('Enter Your Email : ')
+Password=input('Enter Your PassWord : ')
+
+headers = {
+    'Host': 'www.facebook.com',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.5',
+    'Accept-Encoding': 'gzip, deflate',
+    'Upgrade-Insecure-Requests': '1',
+    'Sec-Fetch-Dest': 'document',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Site': 'none',
+    'Sec-Fetch-User': '?1',
+    'Connection': 'close',
+}
+
+response = requests.get('https://www.facebook.com/', headers=headers)
+fr=response.cookies['fr']
+sb=response.cookies['sb']
+_datr=response.text.split('"_js_datr","')[1].split('"')[0]
+_token=response.text.split('privacy_mutation_token=')[1].split('"')[0]
+_jago=response.text.split('"jazoest" value="')[1].split('"')[0]
+_lsd=response.text.split('name="lsd" value="')[1].split('"')[0]
+
+
+cookies = {
+    'fr': fr,
+    'sb': sb,
+    '_js_datr': _datr,
+    'wd': '717x730',
+    'dpr': '1.25',
+}
+
+data = urlencode({
+    'jazoest': _jago,
+    'lsd': _lsd,
+    'email': Email,
+    'login_source': 'comet_headerless_login',
+    'next': '',
+    'encpass': f'#PWD_BROWSER:0:{round(time.time())}:{Password}',
+})
+
+
+headers = {
+    'Host': 'www.facebook.com',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.5',
+    'Accept-Encoding': 'gzip, deflate',
+    'Referer': 'https://www.facebook.com/',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Length': str(len(data)),
+    'Origin': 'https://www.facebook.com',
+    'Upgrade-Insecure-Requests': '1',
+    'Sec-Fetch-Dest': 'document',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Site': 'same-origin',
+    'Sec-Fetch-User': '?1',
+}
+
+response = requests.post(f'https://www.facebook.com/login/?privacy_mutation_token={_token}', cookies=cookies, headers=headers, data=data)
+
+if 'The email address you entered isn&#039;t connected to an account' in response.text:
+    print('The email address you entered is not connected to an account')
+elif 'The email address or mobile number you entered isn&#039;t connected to an account' in response.text:
+    print('The email address or mobile number you entered is not connected to an account')
+
+elif 'The password that you&#039;ve entered is incorrect.' in response.text:
+    print("The password that you've entered is incorrect")
+elif 'Choose a way to confirm that it&#039;s you' in response.text:
+    print('Two Factor Code Sended.....')
+elif 'should_show_close_friend_badge":false' in response.text:
+    print('Login Success ')
+else:
+    print(response.content) # If They Showing Html Code Copy And Paste On Html Viewer Website And Check What Response Show You .
+
